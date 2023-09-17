@@ -1,78 +1,30 @@
-<!--
-This example fetches latest Vue.js commits data from GitHub’s API and displays them as a list.
-You can switch between the two branches.
--->
-
 <script>
-const API_URL = `https://api.github.com/repos/vuejs/core/commits?per_page=3&sha=`
+const API_URL = `http://127.0.0.1:8000/hello/oui/cyprien`;
 
 export default {
   data: () => ({
-    branches: ['main', 'v2-compat'],
-    currentBranch: 'main',
-    commits: null
+    message: null
   }),
 
   created() {
-    // fetch on init
-    this.fetchData()
-  },
-
-  watch: {
-    // re-fetch whenever currentBranch changes
-    currentBranch: 'fetchData'
+    this.fetchData();
   },
 
   methods: {
     async fetchData() {
-      const url = `${API_URL}${this.currentBranch}`
-      this.commits = await (await fetch(url)).json()
-    },
-    truncate(v) {
-      const newline = v.indexOf('\n')
-      return newline > 0 ? v.slice(0, newline) : v
-    },
-    formatDate(v) {
-      return v.replace(/T|Z/g, ' ')
+      this.message = await (await fetch(API_URL)).json();
     }
   }
 }
 </script>
 
 <template>
-  <h1>Latest Vue Core Commits</h1>
-  <template v-for="branch in branches">
-    <input type="radio"
-      :id="branch"
-      :value="branch"
-      name="branch"
-      v-model="currentBranch">
-    <label :for="branch">{{ branch }}</label>
-  </template>
-  <p>vuejs/vue@{{ currentBranch }}</p>
-  <ul>
-    <li v-for="{ html_url, sha, author, commit } in commits">
-      <a :href="html_url" target="_blank" class="commit">{{ sha.slice(0, 7) }}</a>
-      - <span class="message">{{ truncate(commit.message) }}</span><br>
-      by <span class="author">
-        <a :href="author.html_url" target="_blank">{{ commit.author.name }}</a>
-      </span>
-      at <span class="date">{{ formatDate(commit.author.date) }}</span>
-    </li>
-  </ul>
+  <div>
+    <h1>Message from API</h1>
+    <p>{{ message }}</p>
+  </div>
 </template>
 
 <style>
-a {
-  text-decoration: none;
-  color: #42b883;
-}
-li {
-  line-height: 1.5em;
-  margin-bottom: 20px;
-}
-.author,
-.date {
-  font-weight: bold;
-}
+/* ajoutez vos styles ici */
 </style>
