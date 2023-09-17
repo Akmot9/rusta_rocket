@@ -21,7 +21,8 @@ export default {
 <template>
   <div>
     <h1>Message from API</h1>
-    <p>{{ message }}</p>
+    <p>{{ message ? message.message : "Loading..." }}
+    </p>  
   </div>
 </template>
 
