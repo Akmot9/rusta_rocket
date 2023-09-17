@@ -24,6 +24,13 @@ impl Fairing for CORS {
     }
 }
 
+#[launch]
+fn rocket() -> _ {
+    rocket::build()
+        .attach(CORS)
+        .mount("/hello", routes![world])
+}
+
 #[derive(Serialize)]
 struct Message {
     message: String,
@@ -36,9 +43,3 @@ fn world(name: &str) -> Json<Message> {
     })
 }
 
-#[launch]
-fn rocket() -> _ {
-    rocket::build()
-        .attach(CORS)
-        .mount("/hello", routes![world])
-}
